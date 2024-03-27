@@ -1,0 +1,46 @@
+{% extends 'main/base.html' %}
+{% block head %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Оценка важности слов в файлах</h1>
+    <p class="lead"></p>
+</div>
+
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form }}
+                <button class="btn btn-primary" type="submit">
+                    Загрузить
+                </button>
+            </form>
+		</div>
+	</div>
+    {% for doc in list_dict %}
+    <div class="row">
+    <h2>Название файла: {{ doc.file_name }}</h2>
+        <table class="table">
+          <thead>
+            <tr>
+                <th scope="col">Слово</th>
+                <th scope="col">TF</th>
+                <th scope="col">IDF</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for word in doc.stats %}
+            <tr>
+              <td>{{ word.word }}</td>
+              <td>{{ word.tf }}</td>
+              <td>{{ word.idf }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
